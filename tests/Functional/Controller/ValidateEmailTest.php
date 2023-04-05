@@ -2,10 +2,8 @@
 
 namespace App\Tests\Functional\Controller;
 
-use App\Shared\Domain\Entity\EmailValidator\RegexEmailValidator;
-use App\Shared\Domain\Entity\EmailValidator\SendPostEmailValidator;
-use App\Shared\Domain\Entity\EmailValidator\SpamDatabaseEmailValidator;
-use App\Shared\Domain\Service\EmailValidateService;
+use App\Shared\Domain\Service\Validator\ValidatorService;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ValidateEmailTest extends WebTestCase
@@ -14,27 +12,27 @@ class ValidateEmailTest extends WebTestCase
 
     public function setUp(): void
     {
-        $this->validator = new EmailValidateService();
+        $this->validator = new ValidatorService;
     }
 
     public function testValidationWithRegex(): void
     {
-        $this->validator->addDriver(new RegexEmailValidator, 'regex');
+        $this->assertFalse($this->validator->validateEmail('test.com', 'regex'));
 
-        $this->validator->setDriver('regex');
+        $this->assertTrue($this->validator->validateEmail('test@gmail.com', 'regex'));
+    }
 
-        $this->assertFalse($this->validator->validate('test.com'));
+    public function testValidationModeNotAvailable(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Unknown mail validation method "notAvailableMode"');
 
-        $this->assertTrue($this->validator->validate('test@gmail.com'));
+        $this->validator->validateEmail('test@gmail.com', 'notAvailableMode');
     }
 
     public function testValidationWithSendPost(): void
     {
-        $this->validator->addDriver(new SendPostEmailValidator, 'post');
-
-        $this->validator->setDriver('post');
-
-        $this->assertTrue($this->validator->validate('test@gmail.com'));
+        $this->assertTrue($this->validator->validateEmail('test@gmail.com', 'post'));
     }
 
     /**
@@ -43,12 +41,8 @@ class ValidateEmailTest extends WebTestCase
      */
     public function testValidationWithSpamDatabase(): void
     {
-        $this->validator->addDriver(new SpamDatabaseEmailValidator, 'spam');
+        $this->assertTrue($this->validator->validateEmail('test@gmail.com', 'spam'));
 
-        $this->validator->setDriver('spam');
-
-        $this->assertTrue($this->validator->validate('test@gmail.com'));
-
-        $this->assertFalse($this->validator->validate('mike@mail.ru'));
+        $this->assertFalse($this->validator->validateEmail('mike@mail.ru', 'spam'));
     }
 }

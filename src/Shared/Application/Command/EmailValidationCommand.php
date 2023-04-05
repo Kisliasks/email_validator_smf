@@ -2,10 +2,10 @@
 
 namespace App\Shared\Application\Command;
 
-use App\Shared\Domain\Entity\EmailValidator\RegexEmailValidator;
-use App\Shared\Domain\Entity\EmailValidator\SendPostEmailValidator;
-use App\Shared\Domain\Entity\EmailValidator\SpamDatabaseEmailValidator;
-use App\Shared\Domain\Service\EmailValidateService;
+use App\Shared\Domain\Components\EmailValidator\RegexEmailValidator;
+use App\Shared\Domain\Components\EmailValidator\SendPostEmailValidator;
+use App\Shared\Domain\Components\EmailValidator\SpamDatabaseEmailValidator;
+use App\Shared\Domain\Service\Validator\ValidatorService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,20 +26,20 @@ class EmailValidationCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $validator = new EmailValidateService;
+        $validator = new ValidatorService;
 
-        $validator->addDriver(new RegexEmailValidator, 'regex');
-        $validator->addDriver(new SendPostEmailValidator, 'post');
-        $validator->addDriver(new SpamDatabaseEmailValidator, 'spam');
-
-        $validator->setDriver('regex');
-        $regexValidateResult = $validator->validate($input->getArgument('email'));
-
-        $validator->setDriver('post');
-        $postValidateResult = $validator->validate($input->getArgument('email'));
-
-        $validator->setDriver('spam');
-        $spamValidateResult = $validator->validate($input->getArgument('email'));
+        $regexValidateResult = $validator->validateEmail(
+            $input->getArgument('email'),
+            'regex'
+        );
+        $postValidateResult = $validator->validateEmail(
+            $input->getArgument('email'),
+            'post'
+        );
+        $spamValidateResult = $validator->validateEmail(
+            $input->getArgument('email'),
+            'spam'
+        );
 
         if (
             !$regexValidateResult ||

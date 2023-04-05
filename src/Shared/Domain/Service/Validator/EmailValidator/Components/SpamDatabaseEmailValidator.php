@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Domain\Entity\EmailValidator;
+namespace App\Shared\Domain\Service\Validator\EmailValidator\Components;
 
-use App\Shared\Application\Interfaces\EmailValidate;
+use App\Shared\Application\Interfaces\EmailValidateInterface;
 
-class SpamDatabaseEmailValidator implements EmailValidate
+class SpamDatabaseEmailValidator implements EmailValidateInterface
 {    
     public function validate(string $email): bool
     {
