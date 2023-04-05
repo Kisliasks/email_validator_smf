@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Infrastructure\EmailValidator;
+namespace App\Shared\Domain\Entity\EmailValidator;
 
 use App\Shared\Application\Interfaces\EmailValidate;
 

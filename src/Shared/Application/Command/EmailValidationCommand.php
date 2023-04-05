@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Command;
+namespace App\Shared\Application\Command;
 
+use App\Shared\Domain\Entity\EmailValidator\RegexEmailValidator;
+use App\Shared\Domain\Entity\EmailValidator\SendPostEmailValidator;
+use App\Shared\Domain\Entity\EmailValidator\SpamDatabaseEmailValidator;
 use App\Shared\Domain\Service\EmailValidateService;
-use App\Shared\Infrastructure\EmailValidator\RegexEmailValidator;
-use App\Shared\Infrastructure\EmailValidator\SendPostEmailValidator;
-use App\Shared\Infrastructure\EmailValidator\SpamDatabaseEmailValidator;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 
 class EmailValidationCommand extends Command
 {

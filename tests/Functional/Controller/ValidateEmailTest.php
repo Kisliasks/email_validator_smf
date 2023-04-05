@@ -2,10 +2,10 @@
 
 namespace App\Tests\Functional\Controller;
 
+use App\Shared\Domain\Entity\EmailValidator\RegexEmailValidator;
+use App\Shared\Domain\Entity\EmailValidator\SendPostEmailValidator;
+use App\Shared\Domain\Entity\EmailValidator\SpamDatabaseEmailValidator;
 use App\Shared\Domain\Service\EmailValidateService;
-use App\Shared\Infrastructure\EmailValidator\RegexEmailValidator;
-use App\Shared\Infrastructure\EmailValidator\SendPostEmailValidator;
-use App\Shared\Infrastructure\EmailValidator\SpamDatabaseEmailValidator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ValidateEmailTest extends WebTestCase
