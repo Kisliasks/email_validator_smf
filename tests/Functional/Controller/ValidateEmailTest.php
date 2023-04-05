@@ -38,7 +38,7 @@ class ValidateEmailTest extends WebTestCase
     }
 
     /**
-     * Если почта обнаружилась в спам-базе, она является не валидной.
+     * Если почта обнаружилась в спам-базе, она является невалидной.
      * Для проверки отрицательного значения, используем email из SpamDatabaseEmailValidator
      */
     public function testValidationWithSpamDatabase(): void
