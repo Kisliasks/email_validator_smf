@@ -11,7 +11,11 @@ class SpamDatabaseEmailValidator implements EmailValidateInterface
     public function validate(string $email): bool
     {
         if (
-            in_array($email, $this->getSpamData(), true)
+            in_array(
+                $email,
+                $this->getSpamData(),
+                true
+            )
         ) {
             return false;
         }

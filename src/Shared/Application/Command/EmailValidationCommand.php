@@ -2,9 +2,6 @@
 
 namespace App\Shared\Application\Command;
 
-use App\Shared\Domain\Components\EmailValidator\RegexEmailValidator;
-use App\Shared\Domain\Components\EmailValidator\SendPostEmailValidator;
-use App\Shared\Domain\Components\EmailValidator\SpamDatabaseEmailValidator;
 use App\Shared\Domain\Service\Validator\ValidatorService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -46,9 +43,15 @@ class EmailValidationCommand extends Command
             !$postValidateResult ||
             !$spamValidateResult
         ) {
-            $outputMessage = sprintf('There is a problem. Email %s is not valid!', $input->getArgument('email'));
+            $outputMessage = sprintf(
+                'There is a problem. Email %s is not valid!',
+                $input->getArgument('email')
+            );
         } else {
-            $outputMessage = sprintf('There is good news. Email %s is valid!', $input->getArgument('email'));
+            $outputMessage = sprintf(
+                'There is good news. Email %s is valid!',
+                $input->getArgument('email')
+            );
         }
         $output->writeln($outputMessage);
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Shared\Domain\Service\Validator;
 
 use App\Shared\Application\Interfaces\ValidatorServiceInterface;
-use App\Shared\Domain\Service\Validator\EmailValidator\Components\AbstractEmailValidateService;
 use App\Shared\Domain\Service\Validator\EmailValidator\EmailValidateService;
 
 class ValidatorService implements ValidatorServiceInterface
@@ -18,7 +17,7 @@ class ValidatorService implements ValidatorServiceInterface
      */
     public function validateEmail(string $email, string $mode): bool
     {
-        /** @var AbstractEmailValidateService */
+        /** @var EmailValidateService $validator */
         $validator = new EmailValidateService($mode);
 
         return $validator->validate($email);  
