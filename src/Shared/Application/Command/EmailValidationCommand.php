@@ -2,7 +2,7 @@
 
 namespace App\Shared\Application\Command;
 
-use App\Shared\Application\Interfaces\ValidatorServiceInterface;
+use App\Shared\Application\Interfaces\RegexValidateInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class EmailValidationCommand extends Command
 {
     public function __construct(
-        private readonly ValidatorServiceInterface $validator
+        private readonly RegexValidateInterface $validator
     ) {
         parent::__construct('validate:email');
     }
@@ -29,17 +29,14 @@ class EmailValidationCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {        
-        $regexValidateResult = $this->validator->validateEmail(
-            $input->getArgument('email'),
-            'regex'
+        $postValidateResult = $this->validator->validateWithPost(
+            $input->getArgument('email')
         );
-        $postValidateResult = $this->validator->validateEmail(
-            $input->getArgument('email'),
-            'post'
+        $regexValidateResult = $this->validator->validateWithRegex(
+            $input->getArgument('email')
         );
-        $spamValidateResult = $this->validator->validateEmail(
-            $input->getArgument('email'),
-            'spam'
+        $spamValidateResult = $this->validator->validateWithSpamDataBase(
+            $input->getArgument('email')
         );
 
         if (
