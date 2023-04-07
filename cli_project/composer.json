@@ -1,0 +1,19 @@
+{
+    "name": "admin/cli_project",
+    "autoload": {
+        "psr-4": {
+            "Admin\\CliProject\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "dkislyak"
+        }
+    ],
+    "require": {
+        "symfony/console": "^6.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    }
+}
