@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Shared\Service\Mods;
 
 use App\Shared\Application\Interfaces\RegexValidateInterface;
-use App\Shared\Domain\Service\Validator\EmailValidator\BaseValidateService;
+use App\Shared\Service\BaseValidateService;
 
 /**
  * Расширяет базовый класс валидации
