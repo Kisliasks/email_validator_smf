@@ -2,12 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Domain\Service\Validator\EmailValidator\Components;
+namespace App\Service\Mods;
 
-use App\Shared\Application\Interfaces\EmailValidateInterface;
+use App\Application\Interfaces\EmailValidateInterface;
 
 class RegexEmailValidator implements EmailValidateInterface
 {
+    /**
+     * @param string $email
+     * @return bool
+     */
     public function validate(string $email): bool
     {
         if (preg_match('/.+@.+\..+/i', $email)) {

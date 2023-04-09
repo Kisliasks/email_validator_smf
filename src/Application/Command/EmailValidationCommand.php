@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Shared\Application\Command;
+namespace App\Application\Command;
 
-use App\Shared\Domain\Service\Validator\ValidatorService;
+use App\Service\EmailValidateService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,6 +10,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class EmailValidationCommand extends Command
 {
+    public function __construct(
+        private readonly EmailValidateService $service
+    ) {
+        parent::__construct('validate:email');
+    }
+
     protected function configure()
     {
         $this->setName('validate:email')
@@ -22,26 +28,9 @@ class EmailValidationCommand extends Command
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $validator = new ValidatorService;
-
-        $regexValidateResult = $validator->validateEmail(
-            $input->getArgument('email'),
-            'regex'
-        );
-        $postValidateResult = $validator->validateEmail(
-            $input->getArgument('email'),
-            'post'
-        );
-        $spamValidateResult = $validator->validateEmail(
-            $input->getArgument('email'),
-            'spam'
-        );
-
+    {         
         if (
-            !$regexValidateResult ||
-            !$postValidateResult ||
-            !$spamValidateResult
+            !$this->service->validateEmail($input->getArgument('email'))
         ) {
             $outputMessage = sprintf(
                 'There is a problem. Email %s is not valid!',
