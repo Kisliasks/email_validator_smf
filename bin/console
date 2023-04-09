@@ -1,17 +1,25 @@
 #!/usr/bin/env php
 <?php
 
-use App\Shared\Application\Kernel;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
+use App\Application\Command\EmailValidationCommand;
+use App\Service\EmailValidateService;
+use Symfony\Component\Console\Application;
 
-if (!is_file(dirname(__DIR__).'/vendor/autoload_runtime.php')) {
-    throw new LogicException('Symfony Runtime is missing. Try running "composer require symfony/runtime".');
-}
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 
-require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
+$commandApp = new Application;
 
-return function (array $context) {
-    $kernel = new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
+$container = new DI\Container();
 
-    return new Application($kernel);
-};
+$validators = [
+    $container->get('App\Service\Mods\PostEmailValidator'),
+    $container->get('App\Service\Mods\RegexEmailValidator'),
+    $container->get('App\Service\Mods\SpamDataBaseEmailValidator'),
+];
+
+$service = new EmailValidateService($validators);
+
+$commandApp->add(new EmailValidationCommand($service));
+
+$commandApp->run();
+

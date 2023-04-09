@@ -2,14 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Service;
+namespace App\Service\Mods;
 
-use App\Shared\Application\Interfaces\BaseValidateInterface;
+use App\Application\Interfaces\EmailValidateInterface;
 
-/**
- * Базовый класс валидации email
- */
-class BaseValidateService implements BaseValidateInterface
+class SpamDatabaseEmailValidator implements EmailValidateInterface
 {
     private const SPAM_EMAILS = [
         'mike@mail.ru',
@@ -22,7 +19,7 @@ class BaseValidateService implements BaseValidateInterface
      * @param string $email
      * @return bool
      */
-    public function validateWithSpamDataBase(string $email): bool
+    public function validate(string $email): bool
     {
         if (
             in_array(
@@ -34,15 +31,6 @@ class BaseValidateService implements BaseValidateInterface
             return false;
         }
 
-        return true;
-    }
-
-    /**
-     * @param string $email
-     * @return bool
-     */
-    public function validateWithPost(string $email): bool
-    {
         return true;
     }
 }
